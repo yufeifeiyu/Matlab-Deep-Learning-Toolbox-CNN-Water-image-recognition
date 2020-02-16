@@ -7,3 +7,4 @@
 3.将main.m文件内fname和imagename改为对应的json文件名和image文件名，之后使用matlab运行main.m文件，稍等片刻，即可看到训练过程，训练结束后可以看到ac率和预测后图像和原始图像的对比。
 
 labelme的GitHub地址：https://github.com/wkentaro/labelme
+文件中包含两个测试样例，image1和image2，分别是单通道的遥感水体图像，分辨率为7931*7301和一个从网上下载的RGB水体图像，分辨率为500*333.
