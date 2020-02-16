@@ -10,13 +10,13 @@
 function  DataMark(fname,image_name)
 % description :This function takes the generated json file and the original image as input data, and generates the image data label, with land as 0 and water as 1.
 
-addpath('jsonlab\jsonlab'); %jsonlab¿âÎÄ¼ş´æ·ÅÂ·¾¶
+addpath('jsonlab\jsonlab'); %jsonlabåº“æ–‡ä»¶å­˜æ”¾è·¯å¾„
 jsonData=loadjson(fname);
 [m,n,k]=size(imread(image_name));
 m=ceil(m/16)*16;
 n=ceil(n/16)*16;
 
-%¸ù¾İlabelmeµÄ»®·ÖÉú³É»®·ÖÍ¼Ïñ
+%æ ¹æ®labelmeçš„åˆ’åˆ†ç”Ÿæˆåˆ’åˆ†å›¾åƒ
 I=zeros(m,n);
 label=I;
 % subplot(1,2,1),imshow(label),title('original');
@@ -28,7 +28,7 @@ for i=1:j
     label = label+BW;
 end
 
-%µ÷ÕûÍ¼ÏñµÄ´óĞ¡
+%è°ƒæ•´å›¾åƒçš„å¤§å°
 if m<1024
     m=1024;
 elseif m>4096
@@ -42,5 +42,5 @@ end
 label=imresize(label,[m,n]);
 
 % subplot(1,2,2),imshow(label),title('Water display');
-save('image_label.mat','label','image_name','m','n','k')
+save('image_label.mat','label','image_name','m','n','k') 
 end
