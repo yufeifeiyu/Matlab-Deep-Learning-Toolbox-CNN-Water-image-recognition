@@ -5,25 +5,25 @@
 % description :The training set and test set were generated based on the images and labels, and the CNN training test was used to draw the original images, divide the images and forecast images, and output accuracy
 %----------------------------------------------------------------
 clear;
-fname='image1.json'; %´ı¶ÁÈ¡µÄÎÄ¼şÃû³Æ
-image_name='image1.TIF';%´ı¶ÁÈ¡µÄÍ¼Æ¬Ãû³Æ
-DataMark(fname,image_name);%Êı¾İ±ê¼Çº¯Êı
+fname='image1.json'; %å¾…è¯»å–çš„æ–‡ä»¶åç§°
+image_name='image1.TIF';%å¾…è¯»å–çš„å›¾ç‰‡åç§°
+DataMark(fname,image_name);%æ•°æ®æ ‡è®°å‡½æ•°
 
-%¶ÁÈ¡´¦ÀíºóµÄÍ¼ÏñÊı¾İ
+%è¯»å–å¤„ç†åçš„å›¾åƒæ•°æ®
 load image_label
-image=imread(image_name);%¶ÁÈ¡Ô­Ê¼Í¼Ïñ
-[m1,n1,k1]=size(image);%Ô­Ê¼³ß´ç
+image=imread(image_name);%è¯»å–åŸå§‹å›¾åƒ
+[m1,n1,k1]=size(image);%åŸå§‹å°ºå¯¸
 label2=label;
 
 
-image=imresize(image,[m,n]);%µ÷ÕûÍ¼Ïñ³ß´ç£¬ÒÔÊÊºÏcnnµÄÊäÈë
-%Í¼ÏñÇĞ·Ö£¬½«imageºÍlabelÊı¾İÇĞ·ÖÎªc*r¸ö16*16µÄcellÊı¾İ
+image=imresize(image,[m,n]);%è°ƒæ•´å›¾åƒå°ºå¯¸ï¼Œä»¥é€‚åˆcnnçš„è¾“å…¥
+%å›¾åƒåˆ‡åˆ†ï¼Œå°†imageå’Œlabelæ•°æ®åˆ‡åˆ†ä¸ºc*rä¸ª16*16çš„cellæ•°æ®
 c=zeros(1,m/16)+16;
 r=zeros(1,n/16)+16;
 image1=mat2cell(image,c,r,k);
 label1=mat2cell(label,c,r);
 
-%Í¼Ïñ±ê¼Ç£¬Èç¹ûÒ»¿éÖĞ1µÄÊıÁ¿´óÓÚÒ»°ë£¬ÈÏÎªÊÇË®Ìå±ê¼ÇÎª1£¬·´Ö®ÈÏÎªÊÇÂ½µØ±ê¼ÇÎª0
+%å›¾åƒæ ‡è®°ï¼Œå¦‚æœä¸€å—ä¸­1çš„æ•°é‡å¤§äºä¸€åŠï¼Œè®¤ä¸ºæ˜¯æ°´ä½“æ ‡è®°ä¸º1ï¼Œåä¹‹è®¤ä¸ºæ˜¯é™†åœ°æ ‡è®°ä¸º0
 label=zeros(m*n/16/16,k);
 for i=1:m/16
     for j=1:n/16
@@ -36,91 +36,91 @@ for i=1:m/16
 end
 
 
-%½«image1µÄcellÊı¾İ×ªÎª4D-arrayÊı¾İ£¬ÒÔ×÷ÎªcnnµÄÊäÈë
+%å°†image1çš„cellæ•°æ®è½¬ä¸º4D-arrayæ•°æ®ï¼Œä»¥ä½œä¸ºcnnçš„è¾“å…¥
 input=zeros(16,16,k,m*n/16/16);
 for i=1:m/16
     for j=1:n/16
         input(:,:,:,(i-1)*m/16+j)=image1{i,j};
-    end
+    end 
 end
-output=categorical(label);%°ÑdoubleĞÍµÄlabelÊı¾İ×ªÎªcnnËùÓÃµÄcategoricalĞÍÊı¾İ
+output=categorical(label);%æŠŠdoubleå‹çš„labelæ•°æ®è½¬ä¸ºcnnæ‰€ç”¨çš„categoricalå‹æ•°æ®
 
-train_input=input(:,:,:,1:floor(m*n*0.8/16/16));%È¡80%µÄÊäÈëÑù±¾×÷ÎªÑµÁ·¼¯ÊäÈë
-test_input=input(:,:,:,ceil(m*n*0.8/16/16):m*n/16/16);%È¡20%µÄÊäÈëÑù±¾×÷Îª²âÊÔ¼¯ÊäÈë
-train_output=output(1:floor(m*n*0.8/16/16));%È¡80%µÄÊä³öÑù±¾×÷ÎªÑµÁ·¼¯Êä³ö
-test_output=output(ceil(m*n*0.8/16/16):m*n/16/16);%È¡20%µÄÊä³öÑù±¾×÷Îª²âÊÔ¼¯Êä³ö
+train_input=input(:,:,:,1:floor(m*n*0.8/16/16));%å–80%çš„è¾“å…¥æ ·æœ¬ä½œä¸ºè®­ç»ƒé›†è¾“å…¥
+test_input=input(:,:,:,ceil(m*n*0.8/16/16):m*n/16/16);%å–20%çš„è¾“å…¥æ ·æœ¬ä½œä¸ºæµ‹è¯•é›†è¾“å…¥
+train_output=output(1:floor(m*n*0.8/16/16));%å–80%çš„è¾“å‡ºæ ·æœ¬ä½œä¸ºè®­ç»ƒé›†è¾“å‡º
+test_output=output(ceil(m*n*0.8/16/16):m*n/16/16);%å–20%çš„è¾“å‡ºæ ·æœ¬ä½œä¸ºæµ‹è¯•é›†è¾“å‡º
 
 
-%Éè¼Æcnn
-%¾Å²ã¾í»ıÉñ¾­ÍøÂç
-%1.ÊäÈë²ã£¬Êı¾İ´óĞ¡16*16*k£¬kÎªÍ¼ÏñÍ¨µÀÊı¡£
-%2.¾í»ı²ã£¬16¸ö3*3´óĞ¡µÄ¾í»ıºË£¬²½³¤Îª1£¬¶Ô±ß½ç²¹0¡£
-%3.³Ø»¯²ã£¬Ê¹ÓÃ2*2µÄºË£¬²½³¤Îª2¡£
-%4.¾í»ı²ã£¬32¸ö3*3´óĞ¡µÄ¾í»ıºË£¬²½³¤Îª1£¬¶Ô±ß½ç²¹0¡£
-%5.³Ø»¯²ã£¬Ê¹ÓÃ2*2µÄºË£¬²½³¤Îª2¡£
-%6.¾í»ı²ã£¬64¸ö3*3´óĞ¡µÄ¾í»ıºË£¬²½³¤Îª1£¬¶Ô±ß½ç²¹0¡£
-%7.³Ø»¯²ã£¬Ê¹ÓÃ2*2µÄºË£¬²½³¤Îª2¡£
-%8.È«Á¬½Ó²ã£¬30¸öÉñ¾­Ôª¡£
-%9.È«Á¬½Ó²ã£¬2¸öÉñ¾­Ôª¡£
+%è®¾è®¡cnn
+%ä¹å±‚å·ç§¯ç¥ç»ç½‘ç»œ
+%1.è¾“å…¥å±‚ï¼Œæ•°æ®å¤§å°16*16*kï¼Œkä¸ºå›¾åƒé€šé“æ•°ã€‚
+%2.å·ç§¯å±‚ï¼Œ16ä¸ª3*3å¤§å°çš„å·ç§¯æ ¸ï¼Œæ­¥é•¿ä¸º1ï¼Œå¯¹è¾¹ç•Œè¡¥0ã€‚
+%3.æ± åŒ–å±‚ï¼Œä½¿ç”¨2*2çš„æ ¸ï¼Œæ­¥é•¿ä¸º2ã€‚
+%4.å·ç§¯å±‚ï¼Œ32ä¸ª3*3å¤§å°çš„å·ç§¯æ ¸ï¼Œæ­¥é•¿ä¸º1ï¼Œå¯¹è¾¹ç•Œè¡¥0ã€‚
+%5.æ± åŒ–å±‚ï¼Œä½¿ç”¨2*2çš„æ ¸ï¼Œæ­¥é•¿ä¸º2ã€‚
+%6.å·ç§¯å±‚ï¼Œ64ä¸ª3*3å¤§å°çš„å·ç§¯æ ¸ï¼Œæ­¥é•¿ä¸º1ï¼Œå¯¹è¾¹ç•Œè¡¥0ã€‚
+%7.æ± åŒ–å±‚ï¼Œä½¿ç”¨2*2çš„æ ¸ï¼Œæ­¥é•¿ä¸º2ã€‚
+%8.å…¨è¿æ¥å±‚ï¼Œ30ä¸ªç¥ç»å…ƒã€‚
+%9.å…¨è¿æ¥å±‚ï¼Œ2ä¸ªç¥ç»å…ƒã€‚
 layers = [
-    imageInputLayer([16 16 k])%ÊäÈë²ã£¬kÎªÍ¨µÀÊı
+    imageInputLayer([16 16 k])%è¾“å…¥å±‚ï¼Œkä¸ºé€šé“æ•°
     
-    convolution2dLayer(3,16,'Padding','same')%¾í»ı²ã16¸ö3*3¾í»ıºË
+    convolution2dLayer(3,16,'Padding','same')%å·ç§¯å±‚16ä¸ª3*3å·ç§¯æ ¸
     batchNormalizationLayer
     reluLayer
     
-    maxPooling2dLayer(2,'Stride',2)%³Ø»¯²ã2*2£¬²½³¤2
+    maxPooling2dLayer(2,'Stride',2)%æ± åŒ–å±‚2*2ï¼Œæ­¥é•¿2
     
-    convolution2dLayer(3,32,'Padding','same')%¾í»ı²ã32¸ö3*3¾í»ıºË
+    convolution2dLayer(3,32,'Padding','same')%å·ç§¯å±‚32ä¸ª3*3å·ç§¯æ ¸
     batchNormalizationLayer
     reluLayer
     
-    maxPooling2dLayer(2,'Stride',2)%³Ø»¯²ã2*2£¬²½³¤2
+    maxPooling2dLayer(2,'Stride',2)%æ± åŒ–å±‚2*2ï¼Œæ­¥é•¿2
     
-    convolution2dLayer(3,64,'Padding','same')%¾í»ı²ã64¸ö3*3¾í»ıºË
+    convolution2dLayer(3,64,'Padding','same')%å·ç§¯å±‚64ä¸ª3*3å·ç§¯æ ¸
     batchNormalizationLayer
     reluLayer
     
-    maxPooling2dLayer(2,'Stride',2)%³Ø»¯²ã2*2£¬²½³¤2
+    maxPooling2dLayer(2,'Stride',2)%æ± åŒ–å±‚2*2ï¼Œæ­¥é•¿2
     
-    fullyConnectedLayer(30)%30¸ö½ÚµãµÄÈ«Á¬½Ó²ã
-    fullyConnectedLayer(2)%2¸ö½ÚµãµÄÈ«Á¬½Ó²ã
+    fullyConnectedLayer(30)%30ä¸ªèŠ‚ç‚¹çš„å…¨è¿æ¥å±‚
+    fullyConnectedLayer(2)%2ä¸ªèŠ‚ç‚¹çš„å…¨è¿æ¥å±‚
     softmaxLayer
     classificationLayer];
 
 options = trainingOptions('sgdm', ...
-    'InitialLearnRate',0.01, ...%Ñ§Ï°ËÙÂÊ
-    'MaxEpochs',10-ceil(m/1024)*2, ...%×î´óµü´ú´ÎÊı
+    'InitialLearnRate',0.01, ...%å­¦ä¹ é€Ÿç‡
+    'MaxEpochs',10-ceil(m/1024)*2, ...%æœ€å¤§è¿­ä»£æ¬¡æ•°
     'Shuffle','every-epoch', ...
-    'L2Regularization',0.001,...%L2ÕıÔò»¯²ÎÊı
+    'L2Regularization',0.001,...%L2æ­£åˆ™åŒ–å‚æ•°
     'Verbose',false, ...
     'Plots','training-progress');
-[net,info] = trainNetwork(train_input,train_output,layers,options);%ÑµÁ·ÍøÂç
+[net,info] = trainNetwork(train_input,train_output,layers,options);%è®­ç»ƒç½‘ç»œ
  
-%     'ValidationData',{test_input,test_output},...%·ÀÖ¹¹ıÄâºÏ
+%     'ValidationData',{test_input,test_output},...%é˜²æ­¢è¿‡æ‹Ÿåˆ
 %      'ValidationFrequency',10, ...
      
-YPred = classify(net,test_input);%²âÊÔÍøÂç
+YPred = classify(net,test_input);%æµ‹è¯•ç½‘ç»œ
 if size(YPred)~=size(test_output)
     test_output=test_output';
 end
-accuracy = sum(YPred == test_output)/numel(test_output)%Êä³ö²âÊÔ¼¯µÄacÂÊ
+accuracy = sum(YPred == test_output)/numel(test_output)%è¾“å‡ºæµ‹è¯•é›†çš„acç‡
 
-YPred = classify(net,input);%°ÑÈ«²¿ÊäÈë·Å½øÍøÂç½øĞĞÔ¤²â£¬·µ»ØÔ¤²â½á¹û¿ÉÊÓ»¯
-out_image=zeros(m/16,n/16);%out_imageÎª×îºóÔ¤²âÍ¼Æ¬
-for i=1:m/16 %½«categoricalÀàĞÍÊı¾İ×ª»ØdoubleĞÍ
+YPred = classify(net,input);%æŠŠå…¨éƒ¨è¾“å…¥æ”¾è¿›ç½‘ç»œè¿›è¡Œé¢„æµ‹ï¼Œè¿”å›é¢„æµ‹ç»“æœå¯è§†åŒ–
+out_image=zeros(m/16,n/16);%out_imageä¸ºæœ€åé¢„æµ‹å›¾ç‰‡
+for i=1:m/16 %å°†categoricalç±»å‹æ•°æ®è½¬å›doubleå‹
     for j=1:n/16
         out_image(i,j)=YPred((i-1)*m/16+j);
         out_image(i,j)=out_image(i,j)-1;
     end
 end
-%Õ¹Ê¾Ô­Ê¼Í¼Ïñ¡¢»®·ÖºóÍ¼ÏñºÍÔ¤²âÍ¼Ïñ
-subplot(2,2,1),imshow(imresize(image,[m1,n1])),title('Ô­Ê¼Í¼Ïñ');
-%Õı³£ Èç¹û±ê¼ÇÊ±È¡µÄË®Ìå¾ÍÊÇÕı³£
-subplot(2,2,2),imshow(imresize(label2,[m1,n1])),title('»®·ÖºóÍ¼Ïñ');
-out_image=imresize(out_image,[m1,n1]);%½«Í¼Æ¬´óĞ¡ÖØÖÃÎªÔ­Ê¼´óĞ¡
+%å±•ç¤ºåŸå§‹å›¾åƒã€åˆ’åˆ†åå›¾åƒå’Œé¢„æµ‹å›¾åƒ
+subplot(2,2,1),imshow(imresize(image,[m1,n1])),title('åŸå§‹å›¾åƒ');
+%æ­£å¸¸ å¦‚æœæ ‡è®°æ—¶å–çš„æ°´ä½“å°±æ˜¯æ­£å¸¸
+subplot(2,2,2),imshow(imresize(label2,[m1,n1])),title('åˆ’åˆ†åå›¾åƒ');
+out_image=imresize(out_image,[m1,n1]);%å°†å›¾ç‰‡å¤§å°é‡ç½®ä¸ºåŸå§‹å¤§å°
 
-%È¡·´ Èç¹û±ê¼ÇÊ±È¡µÄÂ½µØ¾ÍÊÇÈ¡·´
-% subplot(2,2,2),imshow(imresize(1-label2,[m1,n1])),title('»®·ÖºóÍ¼Ïñ');
-% out_image=imresize(1-out_image,[m1,n1]);%½«Í¼Æ¬´óĞ¡ÖØÖÃÎªÔ­Ê¼´óĞ¡
-subplot(2,2,3),imshow(out_image),title('Ô¤²âÍ¼Ïñ');
+%å–å å¦‚æœæ ‡è®°æ—¶å–çš„é™†åœ°å°±æ˜¯å–å
+% subplot(2,2,2),imshow(imresize(1-label2,[m1,n1])),title('åˆ’åˆ†åå›¾åƒ');
+% out_image=imresize(1-out_image,[m1,n1]);%å°†å›¾ç‰‡å¤§å°é‡ç½®ä¸ºåŸå§‹å¤§å°
+subplot(2,2,3),imshow(out_image),title('é¢„æµ‹å›¾åƒ');
